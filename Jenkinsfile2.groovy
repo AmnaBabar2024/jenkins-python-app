@@ -13,6 +13,11 @@ pipeline {
                 bat '''
                     python -m venv .venv
                     call .venv\\Scripts\\activate
+                    pip install pylint flake8 bandit mypy
+                    pylint .
+                    flake8 .
+                    bandit -r .
+                    mypy .
                 '''
             }
         }
