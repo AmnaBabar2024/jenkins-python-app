@@ -9,37 +9,25 @@ pipeline {
     }
 
     stage('Setup Python') {
-      steps {
-        sh '''
-          python -m venv .venv
-          . .venv/bin/activate
-          pip install -U pip
-          pip install -r requirements.txt || true
-          pip install pylint flake8 bandit mypy
-          mkdir -p reports
-        '''
-      }
-    }
+            steps {
+                bat '''
+                    python -m venv .venv
+                    call .venv\\Scripts\\activate
+                '''
+            }
+        }
 
-    stage('Static Analysis') {
-      steps {
-        // Run tools and write reports into 'reports' folder
-        sh '''
-          . .venv/bin/activate
-          # Pylint (parseable)
-          pylint app.py --output-format=parseable > reports/pylint.txt || true
-
-          # Flake8
-          flake8 app.py --exit-zero > reports/flake8.txt || true
-
-          # Bandit (JSON)
-          bandit -r . -f json -o reports/bandit.json || true
-
-          # Mypy
-          mypy app.py --no-color-output > reports/mypy.txt || true
-        '''
-      }
-    }
+        stage('Static Analysis') {
+            steps {
+                bat '''
+                    call .venv\\Scripts\\activate
+                    pylint app.py || true
+                    flake8 app.py || true
+                    bandit -r . || true
+                    mypy app.py || true
+                '''
+            }
+        }
 
     stage('Publish Analysis') {
       steps {
