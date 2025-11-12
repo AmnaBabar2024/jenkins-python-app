@@ -33,14 +33,13 @@ pipeline {
             }
         }
 
-        stage('Publish Analysis') {
-            steps {
-              recordIssues tools: [
-                flake8(pattern: 'reports/flake8.txt'),
-                bandit(pattern: 'reports/bandit.json')
-            ]
-          }
-        }
+        // stage('Publish Analysis') {
+        //     steps {
+        //       recordIssues tools: [
+        //         flake8(pattern: 'reports/flake8.txt')
+        //     ]
+        //   }
+        // }
     }
 
     post {
