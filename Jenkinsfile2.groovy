@@ -35,16 +35,11 @@ pipeline {
 
         stage('Publish Analysis') {
             steps {
-                recordIssues(
-                    tools: [
-                        pylint(pattern: 'reports/pylint.txt'),
-                        flake8(pattern: 'reports/flake8.txt'),
-                        bandit(pattern: 'reports/bandit.json'),
-                        mypy(pattern: 'reports/mypy.txt')
-                    ],
-                    aggregatingResults: true
-                )
-            }
+              recordIssues tools: [
+                flake8(pattern: 'reports/flake8.txt'),
+                bandit(pattern: 'reports/bandit.json')
+            ]
+          }
         }
     }
 
